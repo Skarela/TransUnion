@@ -22,10 +22,12 @@ namespace TransUnionPortal.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(ConfigurationFile configurationFile)
+        public ActionResult Index(ConfigurationFile model)
         {
-
-            return View();
+            var tipo = model.SelectecType;
+            ExportFileRepository servicio = new ExportFileRepository();
+            Contenido contenido = servicio.SetContentData(tipo);
+            return View(contenido);
         }
 
         [HttpPost]
