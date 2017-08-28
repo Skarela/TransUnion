@@ -1,16 +1,42 @@
 ﻿@model TransUnionPortal.Models.Contenido
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
 
 <table class="table">
     <tr>
-        <th></th>
+        <th>Campo</th>
+        <th>Valor</th>
     </tr>
 
-@*@foreach (var item in Model) {*@
-    <tr>
-        <td>
-            
-        </td>
-    </tr>
-@*}*@
+@if(Model.CargaFinanciera != null) {
 
+    foreach (var propiedad in Model.CargaFinanciera.GetType().GetProperties())
+    {
+        var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
+        <tr>
+            <td>@label</td>
+            <td>
+                @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
+                @propiedad.GetValue(Model.CargaFinanciera)
+            </td>
+        </tr>
+    }
+
+}
+
+else
+{
+    foreach (var propiedad in Model.BanderaAmarilla.GetType().GetProperties())
+    {
+        var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
+        <tr>
+            <td>@label</td>
+            <td>
+                @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
+                @propiedad.GetValue(Model.BanderaAmarilla)
+            </td>
+        </tr>
+    }
+}
+    
 </table>

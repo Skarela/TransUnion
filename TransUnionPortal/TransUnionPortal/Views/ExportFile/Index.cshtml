@@ -32,10 +32,19 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-success">Preview</button>
+                            <button type="submit" class="btn btn-success" name="boton" value="Consultar">Preview</button>
                         </div>
                     </div>
                 </fieldset>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (Model.Contenido != null)
+                        {
+                            @Html.Partial("Tabla", Model.Contenido ?? new TransUnionPortal.Models.Contenido())
+                            <button type="submit" class="btn btn-info" name="boton" value="Exportar">Exportar datos</button>                        }
+                    </div>
+                </div>
             }
 
         </div>
@@ -43,6 +52,27 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+    <script>
+        /*function Exportar() {
+            var data = $('form').serialize();
+            console.log(data);
+        }*/
+        @*$(document).ready(function () {
+            var model = '@Html.Raw(Json.Encode(Model))';
+            $("#Generar").click(function () {
+                $.ajax({
+                    url: '@Url.Action("Generate", "ExportFile")',
+                    type: 'POST',
+                    data: { model: model },
+                    success: function (data) {
+                        alert("Generado con éxito");
+                    }
+                });
+                return false;
+            });
+        });*@
+</script>
     
 </body>
 </html>

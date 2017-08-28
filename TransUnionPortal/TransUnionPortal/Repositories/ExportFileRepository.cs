@@ -24,46 +24,54 @@ namespace TransUnionPortal.Repositories
 
         public Contenido SetContentData(int? tipo)
         {
-            Contenido content = new Contenido();
+            Contenido contenido = new Contenido();
 
             if (tipo == 1)
             {
-                content.CargaFinanciera.NIV = "ABC123";
-                content.CargaFinanciera.Aseguradora = "Qualitas";
-                content.CargaFinanciera.Color = "Verde";
-                content.CargaFinanciera.Entidad = "Yucatán";
-                content.CargaFinanciera.EstadoCartera = 7;
-                content.CargaFinanciera.EstadoVehiculo = 2;
-                content.CargaFinanciera.Fabricante = "Hyundai";
-                content.CargaFinanciera.FechaInicio = "25/08/2017";
-                content.CargaFinanciera.Inciso = "243";
-                content.CargaFinanciera.Modelo = "2015";
-                content.CargaFinanciera.NCI = "424FSDF";
-                content.CargaFinanciera.NumeroContrato = "0342";
-                content.CargaFinanciera.NumeroPoliza = "453SFD";
-                content.CargaFinanciera.Observaciones = "Los rines no son los originales";
-                content.CargaFinanciera.Placas = "IAM-KWAI";
-                content.CargaFinanciera.Submarca = "Elantra";
-                content.CargaFinanciera.TipoCliente = 1;
-                content.CargaFinanciera.TipoCredito = 5;
-                content.CargaFinanciera.TipoVehiculo = 2;
-                content.CargaFinanciera.UsoVehiculo = 2;
-                content.CargaFinanciera.VigenciaContrato = "24";
+                CargaFinanciera carga = new CargaFinanciera { 
+                    NIV = "ABC123",
+                    Aseguradora = "Qualitas",
+                    Color = "Verde",
+                    Entidad = "Yucatán",
+                    EstadoCartera = 7,
+                    EstadoVehiculo = 2,
+                    Fabricante = "Hyundai",
+                    FechaInicio = "25/08/2017",
+                    Inciso = "243",
+                    Modelo = "2015",
+                    NCI = "424FSDF",
+                    NumeroContrato = "0342",
+                    NumeroPoliza = "453SFD",
+                    Observaciones = "Los rines no son los originales",
+                    Placas = "IAM-KWAI",
+                    Submarca = "Elantra",
+                    TipoCliente = 1,
+                    TipoCredito = 5,
+                    TipoVehiculo = 2,
+                    UsoVehiculo = 2,
+                    VigenciaContrato = "24"               
+                };
+
+                contenido.CargaFinanciera = carga;
+               
             }
             else if (tipo == 2)
             {
-                content.BanderaAmarilla.Bandera = 1;
-                content.BanderaAmarilla.EstadoSeguro = 1;
-                content.BanderaAmarilla.EstadoVigencia = 1;
-                content.BanderaAmarilla.FechaDictamina = "31/08/2017";
-                content.BanderaAmarilla.Inciso = "243";
-                content.BanderaAmarilla.Motivo = 3;
-                content.BanderaAmarilla.NumeroContrato = "0342";
-                content.BanderaAmarilla.NumeroPoliza = "453SDF";
-                content.BanderaAmarilla.NumeroSiniestro = "234248";
-                content.BanderaAmarilla.VIN = "890XYZ";
+                BanderaAmarilla bandera = new BanderaAmarilla {         
+                    Bandera = 1,
+                    EstadoSeguro = 1,
+                    EstadoVigencia = 1,
+                    FechaDictamina = "31/08/2017",
+                    Inciso = "243",
+                    Motivo = 3,
+                    NumeroContrato = "0342",
+                    NumeroPoliza = "453SDF",
+                    NumeroSiniestro = "234248",
+                    VIN = "890XYZ"
+                };
+                contenido.BanderaAmarilla = bandera;
             }
-            return content;
+            return contenido;
         }
     }
 }

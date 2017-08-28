@@ -22,5 +22,7 @@ namespace TransUnionPortal.Models
         public IList<Encabezado> Encabezado { get; set; }
 
         public IList<Pie> Pie { get; set; }
+
+        public Contenido Contenido { get; set; }
     }
 }
