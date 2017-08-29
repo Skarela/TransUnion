@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using TransUnionPortal.Models;
 using TransUnionPortal.Repositories;
 using TransUnionPortal.Utils;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace TransUnionPortal.Controllers
 {
@@ -47,70 +49,77 @@ namespace TransUnionPortal.Controllers
         }
 
         [HttpPost]
-        public FileContentResult Generate(ConfigurationFile configurationFile)
-        {
-            // PROBAR SI FUNCIONA CON UN HREF EN VEZ DE UN SUBMIT
-
-            //before your loop
-            var csv = new StreamWriter(new MemoryStream());
-            byte[] bytes;
-            //Suggestion made by KyleMit
-            var newLine = string.Format("{0},{1},{2}", "id", "archivo", "tipo");
-            //csv.AppendLine(newLine);
-            //foreach (var dato in configurationFile.Encabezado)
-            //{
-            //    csv.Append(dato.Id);
-            //    csv.Append(dato.IdInstitucion);
-            //    csv.Append(dato.FechaEnvio);
-            //    csv.Append(dato.HoraEnvio);
-            //    csv.Append(dato.TipoArchivo);
-            List<Contenido> contenido = new List<Contenido>();
-            contenido.Add(configurationFile.Contenido);
+        public void Generate(ConfigurationFile configurationFile)
+        {     
             var cd = new System.Net.Mime.ContentDisposition
             {
                 FileName = "test.csv",
-                Inline = false,
+                Inline = true,
             };
-            Response.Clear();
-            Response.AppendHeader("content-disposition", cd.ToString());
-            Response.ContentType = "application/octet-stream";
 
-            if(configurationFile.Contenido.CargaFinanciera != null) {
+            System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+            response.ClearContent();
+            response.Clear();
+            response.Charset = "ASCII";
 
-                foreach (var propiedad in contenido)
+            CargaFinanciera carga = configurationFile.Contenido.CargaFinanciera;
+            BanderaAmarilla bandera = configurationFile.Contenido.BanderaAmarilla;
+
+            if(carga != null && bandera == null) {
+
+                List<CargaFinanciera> cfList = new List<CargaFinanciera>();
+                cfList.Add(carga);
+
+                foreach (var cf in cfList)
                 {
-                    //csv.Append(propiedad.CargaFinanciera.NIV);
-                    //csv.Append(propiedad.CargaFinanciera.Entidad);
-                    //csv.Append(propiedad.CargaFinanciera.EstadoVehiculo);
-                    //csv.Append(propiedad.CargaFinanciera.VigenciaContrato);
-                    //csv.Append(propiedad.CargaFinanciera.FechaInicio);
-                    //csv.Append(propiedad.CargaFinanciera.NumeroContrato);
-                    //csv.Append(propiedad.CargaFinanciera.Observaciones);
-                    //csv.Append(propiedad.CargaFinanciera.TipoCredito);
-                    //csv.Append(propiedad.CargaFinanciera.TipoCliente);
-                    //csv.Append(propiedad.CargaFinanciera.EstadoCartera);
-                    //csv.Append(propiedad.CargaFinanciera.UsoVehiculo);
-                    //csv.Append(propiedad.CargaFinanciera.Submarca);
-                    //csv.Append(propiedad.CargaFinanciera.Aseguradora);
-                    //csv.Append(propiedad.CargaFinanciera.NumeroPoliza);
-                    //csv.Append(propiedad.CargaFinanciera.Inciso);
-                    //csv.Append(propiedad.CargaFinanciera.Fabricante);
-                    //csv.Append(propiedad.CargaFinanciera.TipoVehiculo);
-                    //csv.Append(propiedad.CargaFinanciera.Modelo);
-                    //csv.Append(propiedad.CargaFinanciera.Color);
-                    //csv.Append(propiedad.CargaFinanciera.Placas);
-                    //csv.Append(propiedad.CargaFinanciera.NCI);
-                    csv.WriteLine(String.Format(propiedad.CargaFinanciera.NIV, propiedad.CargaFinanciera.Modelo));
+                    var propiedades = cf.GetType().GetProperties().ToList();
+
+                    foreach (var prop in propiedades)
+                    {
+
+                        response.Write(prop.GetCustomAttribute<DisplayAttribute>().GetName() + ",");
+
+                    }
+                    response.Write(Environment.NewLine);
+                    propiedades.ForEach((propiedad) => response.Write(propiedad.GetValue(cf).ToString() + ","));
+        
                 }
-                bytes = Encoding.ASCII.GetBytes(csv.ToString());
-                //after your loop
-                
-                
-                return File(Encoding.ASCII.GetBytes(csv.ToString()), "text/csv");
+                             
+                response.ContentType = "text/csv";
+                response.AddHeader("Content-Disposition", cd.ToString());
+                response.Flush();
+                response.End();
+
             }
-            
-            return File(Encoding.ASCII.GetBytes(csv.ToString()), "text/csv", "asdf.csv");
-            
+
+            else if (bandera != null && carga == null)
+            {
+                List<BanderaAmarilla> cfList = new List<BanderaAmarilla>();
+                cfList.Add(bandera);
+
+                foreach (var cf in cfList)
+                {
+                    var propiedades = cf.GetType().GetProperties().ToList();
+
+                    foreach (var prop in propiedades)
+                    {
+
+                        response.Write(prop.GetCustomAttribute<DisplayAttribute>().GetName() + ",");
+
+                    }
+                    response.Write(Environment.NewLine);
+                    propiedades.ForEach((propiedad) => response.Write(propiedad.GetValue(cf).ToString() + ","));
+
+                }
+
+                response.ContentType = "text/csv";
+                response.AddHeader("Content-Disposition", cd.ToString());
+                response.Flush();
+                response.End();
+            }
+
         }
+
     }
+
 }
