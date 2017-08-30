@@ -7,7 +7,13 @@ namespace TransUnionPortal.Models
 {
     public class Contenido
     {
-        public CargaFinanciera CargaFinanciera { get; set; }
-        public BanderaAmarilla BanderaAmarilla { get; set; }
+        public List<CargaFinanciera> CargaFinanciera { get; set; }
+        public List<BanderaAmarilla> BanderaAmarilla { get; set; }
+
+        //public Contenido()
+        //{
+        //    CargaFinanciera = new List<CargaFinanciera>();
+        //    BanderaAmarilla = new List<BanderaAmarilla>();
+        //}
     }
 }

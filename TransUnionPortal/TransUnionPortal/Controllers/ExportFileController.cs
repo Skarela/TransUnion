@@ -62,13 +62,15 @@ namespace TransUnionPortal.Controllers
             response.Clear();
             response.Charset = "ASCII";
 
-            CargaFinanciera carga = configurationFile.Contenido.CargaFinanciera;
-            BanderaAmarilla bandera = configurationFile.Contenido.BanderaAmarilla;
+            //CargaFinanciera carga = configurationFile.Contenido.CargaFinanciera;
+            //BanderaAmarilla bandera = configurationFile.Contenido.BanderaAmarilla;
+            List<CargaFinanciera> cfList = configurationFile.Contenido.CargaFinanciera;
+            List<BanderaAmarilla> baList = configurationFile.Contenido.BanderaAmarilla;
 
-            if(carga != null && bandera == null) {
+            if(cfList != null) {
 
-                List<CargaFinanciera> cfList = new List<CargaFinanciera>();
-                cfList.Add(carga);
+                
+                //cfList.Add(carga);
 
                 foreach (var cf in cfList)
                 {
@@ -92,14 +94,14 @@ namespace TransUnionPortal.Controllers
 
             }
 
-            else if (bandera != null && carga == null)
+            else if (baList != null)
             {
-                List<BanderaAmarilla> cfList = new List<BanderaAmarilla>();
-                cfList.Add(bandera);
+                
+                //cfList.Add(bandera);
 
-                foreach (var cf in cfList)
+                foreach (var ba in baList)
                 {
-                    var propiedades = cf.GetType().GetProperties().ToList();
+                    var propiedades = ba.GetType().GetProperties().ToList();
 
                     foreach (var prop in propiedades)
                     {
@@ -108,7 +110,7 @@ namespace TransUnionPortal.Controllers
 
                     }
                     response.Write(Environment.NewLine);
-                    propiedades.ForEach((propiedad) => response.Write(propiedad.GetValue(cf).ToString() + ","));
+                    propiedades.ForEach((propiedad) => response.Write(propiedad.GetValue(ba).ToString() + ","));
 
                 }
 

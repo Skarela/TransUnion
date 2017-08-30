@@ -24,5 +24,6 @@ namespace TransUnionPortal.Models
         public IList<Pie> Pie { get; set; }
 
         public Contenido Contenido { get; set; }
+
     }
 }

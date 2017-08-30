@@ -38,12 +38,14 @@
                 </fieldset>
 
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 pre-scrollable">
                         @if (Model.Contenido != null)
                         {
                             @Html.Partial("Tabla", Model.Contenido ?? new TransUnionPortal.Models.Contenido())
-                            <button type="submit" id="Exportar" class="btn btn-info" name="boton" value="Exportar">Exportar datos</button>                        }
+                                                   
+                        }
                     </div>
+                    <button type="submit" id="Exportar" class="btn btn-info" name="boton" value="Exportar">Exportar datos</button>
                 </div>
             }
 

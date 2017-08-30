@@ -3,40 +3,95 @@
 @using System.ComponentModel.DataAnnotations
 
 <table class="table">
-    <tr>
-        <th>Campo</th>
-        <th>Valor</th>
-    </tr>
 
-@if(Model.CargaFinanciera != null) {
-
-    foreach (var propiedad in Model.CargaFinanciera.GetType().GetProperties())
+    @if (Model.CargaFinanciera != null)
     {
-        var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
+        var props = Model.CargaFinanciera.SelectMany((carga) => carga.GetType().GetProperties().ToList());
         <tr>
-            <td>@label</td>
-            <td>
-                @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
-                @propiedad.GetValue(Model.CargaFinanciera)
-            </td>
-        </tr>
-    }
+           @foreach (var propiedad in props)
+           {
 
-}
+                var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
+                <th>@label</th>
 
-else
-{
-    foreach (var propiedad in Model.BanderaAmarilla.GetType().GetProperties())
-    {
-        var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
-        <tr>
-            <td>@label</td>
-            <td>
-                @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
-                @propiedad.GetValue(Model.BanderaAmarilla)
-            </td>
+           } 
+
         </tr>
+        foreach (var carga in Model.CargaFinanciera)
+        {
+            //var propiedades = carga.GetType().GetProperties().ToList();
+
+            <tr>
+                @foreach (var propiedad in props)
+                {
+                    <td>@propiedad.GetValue(carga).ToString()</td>
+                }
+            </tr>
+            
+            
+        }
+
+
     }
-}
     
+    @if (Model.BanderaAmarilla != null)
+    {
+        var props = Model.BanderaAmarilla.SelectMany((carga) => carga.GetType().GetProperties().ToList());
+        <tr>
+            @foreach (var propiedad in props)
+            {
+
+                var label = propiedad.GetCustomAttribute<DisplayAttribute>().GetName();
+                <th>@label</th>
+
+            }
+
+        </tr>
+        foreach (var carga in Model.BanderaAmarilla)
+        {
+            //var propiedades = carga.GetType().GetProperties().ToList();
+
+            <tr>
+                @foreach (var propiedad in props)
+                {
+                    <td>@propiedad.GetValue(carga).ToString()</td>
+                }
+            </tr>
+
+
+        }
+
+
+    }
 </table>
+             @*@foreach (var propiedad in Model.CargaFinanciera.GetType().GetProperties())
+            {
+            
+                <tr>
+                    <td>@label</td>
+                    <td>*@
+                        @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
+                        @*@propiedad.GetValue(Model.CargaFinanciera)
+                    </td>
+                </tr>
+                }
+
+            }
+
+            else
+            {
+            foreach (var propiedad in Model.BanderaAmarilla.GetType().GetProperties())
+            {
+            var label = propiedad.GetCustomAttribute<displayattribute>
+                ().GetName();
+                <tr>
+                    <td>@label</td>
+                    <td>*@
+                        @*@(Html.TextBox(propiedad.Name, propiedad.GetValue(Model.CargaFinanciera, null)))*@
+                        @*@propiedad.GetValue(Model.BanderaAmarilla)
+                    </td>
+                </tr>
+                }
+                }
+
+                </table>*@
